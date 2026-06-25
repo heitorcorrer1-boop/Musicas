@@ -1,7 +1,7 @@
 <?php
 // BDconnect.php
 
-// No Railway, as variáveis oficiais geralmente vêm com estes nomes:
+// Pega as variáveis automáticas do Railway
 $host     = isset($_ENV['MYSQLHOST']) ? $_ENV['MYSQLHOST'] : (isset($_ENV['MYSQL_HOST']) ? $_ENV['MYSQL_HOST'] : 'localhost');
 $usuario  = isset($_ENV['MYSQLUSER']) ? $_ENV['MYSQLUSER'] : (isset($_ENV['MYSQL_USER']) ? $_ENV['MYSQL_USER'] : 'root');
 $senha    = isset($_ENV['MYSQLPASSWORD']) ? $_ENV['MYSQLPASSWORD'] : (isset($_ENV['MYSQL_PASSWORD']) ? $_ENV['MYSQL_PASSWORD'] : '');
@@ -11,11 +11,12 @@ $porta    = isset($_ENV['MYSQLPORT']) ? $_ENV['MYSQLPORT'] : (isset($_ENV['MYSQL
 // Tenta conectar
 $BDconnect = mysqli_connect($host, $usuario, $senha, $banco, $porta);
 
-// Se falhar, exibe o erro exato e para a execução (evita o Erro 500 genérico)
 if (!$BDconnect) {
-    header('Content-Type: application/json', true, 500);
+    // Força o PHP a responder com um texto claro em vez de quebrar em Erro 500
+    header('Content-Type: application/json', true, 200); 
     echo json_encode([
-        "erro" => "Falha na conexão com o Banco de Dados",
+        "status" => "erro_conexao",
+        "mensagem" => "Falha na conexão com o Banco de Dados",
         "detalhes" => mysqli_connect_error()
     ]);
     exit;
