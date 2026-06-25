@@ -1,22 +1,21 @@
 <?php
 // BDconnect.php
 
-// O Railway injeta essas variáveis automaticamente no servidor.
-// Se elas não existirem (como no seu PC local), ele usa os valores padrão (localhost, root, etc).
-$host     = getenv('MYSQLHOST')     ?: 'localhost';
-$username = getenv('MYSQLUSER')     ?: 'root';
-$password = getenv('MYSQLPASSWORD') ?: '';
-$database = getenv('MYSQLDATABASE') ?: 'biblioteca_musicas';
-$port     = getenv('MYSQLPORT')     ?: '3306';
+// O $_ENV tenta pegar os dados do servidor do Railway automaticamente.
+// Se não encontrar (caso você rode no PC), ele usa o 'localhost' como padrão.
+$host     = isset($_ENV['MYSQLHOST']) ? $_ENV['MYSQLHOST'] : 'localhost';
+$usuario  = isset($_ENV['MYSQLUSER']) ? $_ENV['MYSQLUSER'] : 'root';
+$senha    = isset($_ENV['MYSQLPASSWORD']) ? $_ENV['MYSQLPASSWORD'] : '';
+$banco    = isset($_ENV['MYSQLDATABASE']) ? $_ENV['MYSQLDATABASE'] : 'sua_database_local';
+$porta    = isset($_ENV['MYSQLPORT']) ? $_ENV['MYSQLPORT'] : '3306';
 
-// Cria a conexão incluindo a porta (obrigatório para o Railway)
-$BDconnect = mysqli_connect($host, $username, $password, $database, $port);
+// Cria a conexão incluindo a porta
+$BDconnect = mysqli_connect($host, $usuario, $senha, $banco, $porta);
 
-// Verifica se houve erro na conexão
 if (!$BDconnect) {
     die("Falha na conexão com o banco de dados: " . mysqli_connect_error());
 }
 
-// Define o charset para não quebrar acentos das músicas
-mysqli_set_charset($BDconnect, "utf8mb4");
+// Garante que o banco aceite acentos corretamente (UTF-8)
+mysqli_set_charset($BDconnect, "utf8");
 ?>
