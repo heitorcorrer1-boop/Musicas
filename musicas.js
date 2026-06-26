@@ -5,7 +5,8 @@
 const input = document.getElementById("busca");
 const container = document.getElementById("container");
 
-// Função que busca as músicas na API e joga na tela
+// Substitua APENAS a função carregarMusicas no seu musicas.js por esta:
+
 function carregarMusicas(busca = "") {
     fetch("api_musicas.php?busca=" + encodeURIComponent(busca))
         .then(res => res.json())
@@ -18,22 +19,32 @@ function carregarMusicas(busca = "") {
             }
 
             data.forEach(musica => {
-                // Transforma o objeto da música em texto limpo para colocar no HTML do card
-                const dadosMusica = JSON.stringify(musica).replace(/"/g, '&quot;');
+                // 1. Criamos a caixinha do card na memória do navegador de forma isolada
+                const card = document.createElement("div");
+                card.className = "card";
+                card.style.cursor = "pointer";
 
-                container.innerHTML += `
-                    <div class="card" onclick="abrirModalEditar('${dadosMusica}')" style="cursor: pointer;">
-                        <img src="${musica.foto}">
-                        <div class="card-content">
-                            <div class="nome-musica">${musica.nome}</div>
-                            <div class="artista-musica">${musica.artista}</div>
-                            <div>Álbum: ${musica.album}</div>
-                            <div>Ano: ${musica.ano}</div>
-                        </div>
+                // 2. Injetamos o conteúdo visual interno
+                card.innerHTML = `
+                    <img src="${musica.foto}">
+                    <div class="card-content">
+                        <div class="nome-musica">${musica.nome}</div>
+                        <div class="artista-musica">${musica.artista}</div>
+                        <div>Álbum: ${musica.album}</div>
+                        <div>Ano: ${musica.ano}</div>
                     </div>
                 `;
+
+                // 3. Atribuímos o clique DIRETO no elemento passando o objeto real, sem converter para texto
+                card.addEventListener("click", () => {
+                    abrirModalEditarObjeto(musica);
+                });
+
+                // 4. Jogamos o card pronto dentro do container na tela
+                container.appendChild(card);
             });
-        });
+        })
+        .catch(erro => console.error("Erro ao listar músicas:", erro));
 }
 
 // Carrega as músicas assim que abre a página
@@ -100,30 +111,19 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// ==========================================
-// 3. AÇÃO DE CLICAR NO CARD
-// ==========================================
+// Substitua a função abrirModalEditar no final do arquivo por esta:
 
-// Esta função roda quando você clica em uma música. Ela pega o texto gerado,
-// transforma de volta em objeto e preenche os campos do modal de edição.
-function abrirModalEditar(musicaTexto) {
+function abrirModalEditarObjeto(musica) {
     const modalEditar = document.getElementById("modalEditar");
     
-    if (!modalEditar) {
-        console.error("O modalEditar não existe no seu HTML ainda!");
-        return;
-    }
-
-    const musica = JSON.parse(musicaTexto);
-
-    // Preenche cada campo do formulário de edição com os dados da música clicada
+    // Preenche cada campo do formulário mapeando os IDs exatos do seu HTML
     document.getElementById("edit_id").value = musica.id;
     document.getElementById("edit_nome").value = musica.nome;
     document.getElementById("edit_artista").value = musica.artista;
-    document.getElementById("edit_album").value = musica.album;
-    document.getElementById("edit_ano").value = musica.ano;
-    document.getElementById("edit_foto").value = musica.foto;
+    document.getElementById("edit_album").value = musica.album || "";
+    document.getElementById("edit_ano").value = musica.ano || "";
+    document.getElementById("edit_foto").value = musica.foto || "";
 
-    // Abre a janela de edição
+    // Abre a janela de edição de forma limpa
     modalEditar.style.display = "block";
 }
