@@ -14,8 +14,11 @@ function carregarMusicas(busca = "") {
             }
 
             data.forEach(musica => {
+                // Convertemos o objeto da música em texto para conseguir passar por parâmetro no HTML
+                const dadosMusica = JSON.stringify(musica).replace(/"/g, '&quot;');
+
                 container.innerHTML += `
-                    <div class="card">
+                    <div class="card" onclick="abrirModalEditar('${dadosMusica}')" style="cursor: pointer;">
                         <img src="${musica.foto}">
                         <div class="card-content">
                             <div id="nome">${musica.nome}</div>
@@ -83,3 +86,34 @@ formMusica.addEventListener("submit", (e) => {
         console.error(erro);
     });
 });
+
+// Elementos do Modal de Edição
+const modalEditar = document.getElementById("modalEditar");
+const btnFecharEditar = document.getElementById("fecharEditar");
+
+// Função acionada ao clicar em qualquer Card
+function abrirModalEditar(musicaTexto) {
+    // Transforma o texto de volta em um objeto JavaScript
+    const musica = JSON.parse(musicaTexto);
+
+    // Preenche os campos do formulário com os dados atuais da música
+    document.getElementById("edit_id").value = musica.id;
+    document.getElementById("edit_nome").value = musica.nome;
+    document.getElementById("edit_artista").value = musica.artista;
+    document.getElementById("edit_album").value = musica.album;
+    document.getElementById("edit_ano").value = musica.ano;
+    document.getElementById("edit_foto").value = musica.foto;
+
+    // Exibe o modal na tela
+    modalEditar.style.display = "block";
+}
+
+// Fechar o modal de edição
+btnFecharEditar.onclick = () => modalEditar.style.display = "none";
+
+// Modificar o clique na janela para fechar qualquer um dos modais se clicar fora
+window.onclick = (event) => {
+    const modalInserir = document.getElementById("meuModal");
+    if (event.target == modalInserir) modalInserir.style.display = "none";
+    if (event.target == modalEditar) modalEditar.style.display = "none";
+}
