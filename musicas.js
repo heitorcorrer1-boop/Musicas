@@ -143,3 +143,38 @@ if (btnExcluir) {
         }
     });
 }
+
+const formEditarMusica = document.getElementById("formEditarMusica");
+
+if (formEditarMusica) {
+    formEditarMusica.addEventListener("submit", (e) => {
+        e.preventDefault(); // Impede o reload da página
+
+        // Prepara os dados editados para enviar ao PHP
+        const dados = new FormData();
+        dados.append("id", document.getElementById("edit_id").value);
+        dados.append("nome", document.getElementById("edit_nome").value);
+        dados.append("artista", document.getElementById("edit_artista").value);
+        dados.append("album", document.getElementById("edit_album").value);
+        dados.append("ano", document.getElementById("edit_ano").value);
+        dados.append("foto", document.getElementById("edit_foto").value);
+
+        fetch("api_alterar.php", {
+            method: "POST",
+            body: dados
+        })
+        .then(res => {
+            if (!res.ok) throw new Error("Erro na resposta do servidor");
+            return res.json();
+        })
+        .then(data => {
+            alert(data.mensagem);
+            document.getElementById("modalEditar").style.display = "none"; // Fecha o modal
+            carregarMusicas(); // Atualiza a lista da tela na hora
+        })
+        .catch(erro => {
+            console.error(erro);
+            alert("Erro ao tentar salvar as alterações.");
+        });
+    });
+}
