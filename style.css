@@ -145,3 +145,19 @@ body {
     margin-top: 10px;
 }
 .btn-salvar:hover { background-color: #1aa34a; }
+
+.btn-excluir {
+    background-color: #e91429;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+.btn-excluir:hover {
+    background-color: #b80f1d;
+}
