@@ -1,21 +1,25 @@
 <?php
 // BDconnect.php
 
-// O $_ENV tenta pegar os dados do servidor do Railway automaticamente.
-// Se não encontrar (caso você rode no PC), ele usa o 'localhost' como padrão.
-$host     = isset($_ENV['MYSQLHOST']) ? $_ENV['MYSQLHOST'] : 'localhost';
-$usuario  = isset($_ENV['MYSQLUSER']) ? $_ENV['MYSQLUSER'] : 'root';
-$senha    = isset($_ENV['MYSQLPASSWORD']) ? $_ENV['MYSQLPASSWORD'] : '';
-$banco    = isset($_ENV['MYSQLDATABASE']) ? $_ENV['MYSQLDATABASE'] : 'sua_database_local';
-$porta    = isset($_ENV['MYSQLPORT']) ? $_ENV['MYSQLPORT'] : '3306';
+// Substitua os valores abaixo pelos dados REAIS que aparecem no seu painel do MySQL no Railway:
+$host     = 'mysql.railway.internal'; // Ex: mysql.railway.internal ou algo assim
+$usuario  = 'root'; // Geralmente é root
+$senha    = 'OevJUFSTcKkAMxgYvDfwNqQIWJeqXMBi'; 
+$banco    = 'railway'; // Nome do banco que está lá
+$porta    = '3306';
 
-// Cria a conexão incluindo a porta
+// Tenta conectar usando os dados fixos da nuvem
 $BDconnect = mysqli_connect($host, $usuario, $senha, $banco, $porta);
 
 if (!$BDconnect) {
-    die("Falha na conexão com o banco de dados: " . mysqli_connect_error());
+    header('Content-Type: application/json', true, 200); 
+    echo json_encode([
+        "status" => "erro_conexao",
+        "mensagem" => "Falha na conexão com o Banco de Dados",
+        "detalhes" => mysqli_connect_error()
+    ]);
+    exit;
 }
 
-// Garante que o banco aceite acentos corretamente (UTF-8)
 mysqli_set_charset($BDconnect, "utf8");
 ?>
