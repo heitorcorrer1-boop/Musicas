@@ -132,6 +132,18 @@ body {
     box-sizing: border-box;
 }
 
+/* Formulários dentro dos Modais (Serve para Adicionar e Editar) */
+.modal-content form input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 6px;
+    border: 1px solid #404040;
+    background: #181818;
+    color: white;
+    box-sizing: border-box;
+}
+
 .btn-salvar {
     width: 100%;
     padding: 12px;
