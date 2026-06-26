@@ -20,9 +20,8 @@ class MusicaController {
         // Retorna o resultado para a View (neste caso, o app cliente)
         echo json_encode($musicas);
     }
-}
 
-public function cadastrar() {
+    public function cadastrar() {
     global $BDconnect;
     header('Content-Type: application/json');
 
@@ -56,5 +55,6 @@ public function cadastrar() {
         http_response_code(500);
         echo json_encode(["erro" => "Erro ao salvar no banco de dados."]);
     }
+}
 }
 ?>

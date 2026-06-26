@@ -36,17 +36,17 @@ class MusicaModel {
     }
 
     public function inserirMusica($nome, $artista, $album, $ano, $foto) {
-    $sql = "INSERT INTO musica (nome, artista, album, ano, foto) VALUES (?, ?, ?, ?, ?)";
-    
-    $stmt = mysqli_prepare($this->db, $sql);
-    
-    // "sssss" significa que são 5 strings. Se "ano" for int no banco, pode usar "ssiss"
-    mysqli_stmt_bind_param($stmt, "sssss", $nome, $artista, $album, $ano, $foto);
-    
-    $resultado = mysqli_stmt_execute($stmt);
-    mysqli_stmt_close($stmt);
-    
-    return $resultado; // Retorna true ou false
-}
+        $sql = "INSERT INTO musica (nome, artista, album, ano, foto) VALUES (?, ?, ?, ?, ?)";
+        
+        $stmt = mysqli_prepare($this->db, $sql);
+        
+        // "sssss" significa que são 5 strings. Se "ano" for int no banco, pode usar "ssiss"
+        mysqli_stmt_bind_param($stmt, "sssss", $nome, $artista, $album, $ano, $foto);
+        
+        $resultado = mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+        
+        return $resultado; // Retorna true ou false
+    }
 }
 ?>
