@@ -105,3 +105,41 @@ function abrirModalEditarObjeto(musica) {
 
     modalEditar.style.display = "block";
 }
+
+// 6. EXCLUIR MÚSICA
+const btnExcluir = document.getElementById("btnExcluir");
+
+if (btnExcluir) {
+    btnExcluir.addEventListener("click", () => {
+        // Pega o ID da música que está no campo oculto do formulário
+        const idMusica = document.getElementById("edit_id").value;
+
+        if (!idMusica) return;
+
+        // Confirmação de segurança para o usuário não apagar sem querer
+        const confirmar = confirm("Tem certeza que deseja excluir esta música da sua biblioteca?");
+        
+        if (confirmar) {
+            const dados = new FormData();
+            dados.append("id", idMusica);
+
+            fetch("api_excluir.php", {
+                method: "POST",
+                body: dados
+            })
+            .then(res => {
+                if (!res.ok) throw new Error("Erro na resposta do servidor");
+                return res.json();
+            })
+            .then(data => {
+                alert(data.mensagem);
+                document.getElementById("modalEditar").style.display = "none"; // Fecha o modal
+                carregarMusicas(); // Atualiza a lista da tela
+            })
+            .catch(erro => {
+                console.error(erro);
+                alert("Erro ao tentar excluir a música.");
+            });
+        }
+    });
+}
