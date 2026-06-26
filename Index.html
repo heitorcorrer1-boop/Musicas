@@ -29,6 +29,28 @@
         </div>
     </div>
 
+    <div id="modalEditar" class="modal">
+        <div class="modal-content" style="border-top: 4px solid #1db954;">
+            <span class="fechar" id="fecharEditar">&times;</span>
+            <h2>Editar Música</h2>
+            
+            <form id="formEditarMusica">
+                <input type="hidden" id="edit_id">
+                <input type="text" id="edit_nome" placeholder="Nome da Música" required>
+                <input type="text" id="edit_artista" placeholder="Artista/Banda" required>
+                <input type="text" id="edit_album" placeholder="Álbum">
+                <input type="number" id="edit_ano" placeholder="Ano de Lançamento">
+                <input type="text" id="edit_foto" placeholder="URL da Imagem de Capa">
+                
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <button type="submit" class="btn-salvar" style="flex: 3;">Salvar Alterações</button>
+                    <button type="button" id="btnExcluir" class="btn-excluir" style="flex: 1;">🗑️</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    
     <script src="musicas.js"></script>
 </body>
 </html>
