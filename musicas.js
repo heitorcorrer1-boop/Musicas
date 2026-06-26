@@ -83,15 +83,25 @@ if (formMusica) {
     });
 }
 
-// 5. PREENCHIMENTO DO MODAL DE EDIÇÃO
 function abrirModalEditarObjeto(musica) {
-    // Usamos estritamente o ID único para referenciar e preencher a música selecionada
-    document.getElementById("edit_id").value = musica.id;
-    document.getElementById("edit_nome").value = musica.nome;
-    document.getElementById("edit_artista").value = musica.artista;
-    document.getElementById("edit_album").value = musica.album || "";
-    document.getElementById("edit_ano").value = musica.ano || "";
-    document.getElementById("edit_foto").value = musica.foto || "";
+    const modalEditar = document.getElementById("modalEditar");
+    
+    // Pegamos a referência única do formulário na página
+    const formulario = document.getElementById("formEditarMusica");
+
+    if (!formulario) {
+        console.error("O formulário 'formEditarMusica' não foi encontrado na página.");
+        return;
+    }
+
+    // Em vez de buscar por ID solto na página, injetamos direto nos campos pelo índice/name do formulário
+    // O próprio formulário gerencia as referências internas dos seus inputs
+    formulario.querySelector("#edit_id").value = musica.id;
+    formulario.querySelector("#edit_nome").value = musica.nome;
+    formulario.querySelector("#edit_artista").value = musica.artista;
+    formulario.querySelector("#edit_album").value = musica.album || "";
+    formulario.querySelector("#edit_ano").value = musica.ano || "";
+    formulario.querySelector("#edit_foto").value = musica.foto || "";
 
     modalEditar.style.display = "block";
 }
